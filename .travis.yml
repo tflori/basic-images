@@ -6,6 +6,7 @@ before_install:
   - docker --version
 
 script:
-  - echo "Branch: $TRAVIS_BRANCH"
-  - echo "Tag: $TRAVIS_TAG"
   - bash build.sh
+
+after_success:
+  - bash publish.sh

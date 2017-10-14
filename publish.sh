@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 if $CI; then
     echo "Running on travis ci..."
@@ -21,10 +20,9 @@ fi
 
 echo "Image: $IMAGE"
 echo "Version: $VERSION"
+echo "Namespace: $NAMESPACE"
+echo "Username: $DOCKER_USERNAME"
 
-if [ ! -d $IMAGE ]; then
-    echo "$IMAGE does not exist" >&2
-    exit 1;
-fi
+docker login -p "$DOCKER_PASSWORD" -u "$DOCKER_USERNAME"
 
-echo docker build --tag $NAMESPACE/$IMAGE:$VERSION $IMAGE
+echo docker push $NAMESPACE/$IMAGE:$VERSION
