@@ -23,7 +23,7 @@ fi
 if [ -z $TRAVIS_TAG ]; then
     # non tags are always latest versions
     VERSION=latest
-elif [[ $IMAGE =~ -[0-9]*\.[0-9]*\.[0-9]$ ]]; then
+elif [[ $VERSION =~ ^[0-9]*\.[0-9]*\.[0-9]$ ]]; then
     # version major.minor.fix gets major.minor on docker
     VERSION=$(echo "$VERSION" | cut -d "." -f 1,2)
 fi
@@ -37,7 +37,7 @@ if [ ! -d $IMAGE ]; then
     echo "$IMAGE does not exist" >&2
     exit 1;
 fi
-
+exit 1;
 set -x
 
 docker build -t $NAMESPACE/$IMAGE:$VERSION $IMAGE
