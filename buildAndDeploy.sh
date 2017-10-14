@@ -37,7 +37,7 @@ if [ ! -d $IMAGE ]; then
     echo "$IMAGE does not exist" >&2
     exit 1;
 fi
-exit 1;
+
 set -x
 
 docker build -t $NAMESPACE/$IMAGE:$VERSION $IMAGE
