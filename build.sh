@@ -27,4 +27,6 @@ if [ ! -d $IMAGE ]; then
     exit 1;
 fi
 
-echo docker build --tag $NAMESPACE/$IMAGE:$VERSION $IMAGE
+set -x
+
+docker build --tag $NAMESPACE/$IMAGE:$VERSION $IMAGE

@@ -24,6 +24,7 @@ echo "Version: $VERSION"
 echo "Namespace: $NAMESPACE"
 echo "Username: $DOCKER_USERNAME"
 
-docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+set -x
 
-echo docker push $NAMESPACE/$IMAGE:$VERSION
+docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+docker push $NAMESPACE/$IMAGE:$VERSION
