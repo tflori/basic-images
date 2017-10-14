@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if $CI; then
     echo "Running on travis ci..."
@@ -23,6 +24,6 @@ echo "Version: $VERSION"
 echo "Namespace: $NAMESPACE"
 echo "Username: $DOCKER_USERNAME"
 
-docker login -p "$DOCKER_PASSWORD" -u "$DOCKER_USERNAME"
+docker login --password "$DOCKER_PASSWORD" --username "$DOCKER_USERNAME"
 
 echo docker push $NAMESPACE/$IMAGE:$VERSION
