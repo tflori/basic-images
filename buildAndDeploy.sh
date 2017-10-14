@@ -16,11 +16,17 @@ else
 fi
 
 if [ -z $TRAVIS_TAG ]; then
+    # non tags are always latest versions
     VERSION=latest
+elif [[ $IMAGE =~ -[0-9]*\.[0-9]*\.[0-9]$ ]]; then
+    # version major.minor.fix gets major.minor on docker
+    VERSION=$(echo "$VERSION" | cut -d "." -f 1,2)
 fi
 
 echo "Image: $IMAGE"
 echo "Version: $VERSION"
+echo "Namespace: $NAMESPACE"
+echo "Username: $DOCKER_USERNAME"
 
 if [ ! -d $IMAGE ]; then
     echo "$IMAGE does not exist" >&2
@@ -29,4 +35,6 @@ fi
 
 set -x
 
-docker build --tag $NAMESPACE/$IMAGE:$VERSION $IMAGE
+docker build -t $NAMESPACE/$IMAGE:$VERSION $IMAGE
+docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+docker push $NAMESPACE/$IMAGE:$VERSION
