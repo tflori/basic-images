@@ -8,6 +8,11 @@ fi
 IMAGE="$TRAVIS_BRANCH$1"
 NAMESPACE="iras"
 
+if [ $IMAGE == "master" ]; then
+    echo "nothing to do for master..."
+    exit 0;
+fi
+
 if [[ $IMAGE =~ -[0-9.]*$ ]]; then
     VERSION=$(echo "$IMAGE" | sed 's/^.*-\([0-9.]*\)$/\1/')
     IMAGE=$(echo "$IMAGE" | sed 's/^\(.*\)-[0-9.]*$/\1/')
