@@ -10,9 +10,9 @@ RUN apk add --no-cache \
         php5-mysqli php5-ctype php5-mysql php5-pspell
 
 # install php5 redis module
-RUN apk add --no-cache php5-pear php5-dev autoconf make gcc libc-dev && \
-    sed -i 's/\$PHP -C -n/$PHP -C/' /usr/bin/pecl && \
-    pecl install -o -f redis && \
-    echo "extension=redis.so" > /etc/php5/conf.d/redis.ini && \
-    rm -rf /tmp/pear && \
-    apk del --no-cache php5-pear php5-dev autoconf make gcc libc-dev
+RUN apk add --no-cache php5-pear php5-dev autoconf make gcc libc-dev \
+ && sed -i 's/\$PHP -C -n/$PHP -C/' /usr/bin/pecl \
+ && pecl install -o -f redis \
+ && echo "extension=redis.so" > /etc/php5/conf.d/redis.ini \
+ && rm -rf /tmp/pear \
+ && apk del --no-cache php5-pear php5-dev autoconf make gcc libc-dev
