@@ -1,0 +1,3 @@
+# php7-node
+
+Alpine image with node and php7 installed. Who ever needs this (we do)...
