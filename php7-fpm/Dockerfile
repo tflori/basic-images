@@ -13,6 +13,8 @@ RUN apk add --no-cache php7-fpm su-exec \
 RUN sed -i 's/^;daemonize = yes/daemonize = no/g' /etc/php7/php-fpm.conf \
  && sed -i 's/^;error_log = log\/php7\/error.log/error_log = log\/php\/php-error.log/g' /etc/php7/php-fpm.conf \
  && sed -i 's/^listen = 127.0.0.1:9000/listen = 9000/g' /etc/php7/php-fpm.d/www.conf \
+ && sed -i 's/^user =/;user =/g' /etc/php7/php-fpm.d/www.conf \
+ && sed -i 's/^group =/;group =/g' /etc/php7/php-fpm.d/www.conf \
  && { echo '#!/bin/sh'; \
       echo 'mkdir -p /var/log/php'; \
       echo 'chown -R $UID:$GID /var/log/php'; \
