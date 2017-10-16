@@ -1,4 +1,4 @@
-FROM iras/php7:1.0
+FROM iras/php7:1.1
 
 # install composer, ca-certificates and bash
 RUN apk add --no-cache ca-certificates bash git \
@@ -7,3 +7,5 @@ RUN apk add --no-cache ca-certificates bash git \
  && php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" \
  && php /tmp/composer-setup.php --install-dir=/usr/bin --filename=composer \
  && rm /tmp/composer-setup.php
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
