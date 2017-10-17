@@ -45,7 +45,7 @@ docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 docker push $NAMESPACE/$IMAGE:$VERSION
 
 if [[ $VERSION =~ ^[0-9]*\.[0-9]*$ ]]; then
-    MAJORVERSION=$(echo "$VERSION" | cud -d "." -f 1)
+    MAJORVERSION=$(echo "$VERSION" | cut -d "." -f 1)
     docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:$MAJORVERSION
     docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:latest
     docker push $NAMESPACE/$IMAGE:$VERSION
