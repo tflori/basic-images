@@ -12,6 +12,7 @@ use and modify this image.
 * [php7](php7) - a basic image for php 7.1 based on alpine and with all modules installed
 * [php7-fpm](php7-fpm) - fpm version of php7 based on [php7](php7)
 * [php7-composer](php7-composer) - composer and git installed in [php7](php7)
+* [php7-node](php7-node) - node and npm installed in [php7](php7)
 * [php5](php5) - a basic image for php 5.6 based on alpine and with all modules installed
 * [php5-fpm](php5-fpm) - fpm version of php5 based  on [php5](php5)
 * [php5-composer](php5-composer) - composer and git installed in [php5](php5)
