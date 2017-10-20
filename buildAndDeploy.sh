@@ -48,6 +48,6 @@ if [[ $VERSION =~ ^[0-9]*\.[0-9]*$ ]]; then
     MAJORVERSION=$(echo "$VERSION" | cut -d "." -f 1)
     docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:$MAJORVERSION
     docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:latest
-    docker push $NAMESPACE/$IMAGE:$VERSION
+    docker push $NAMESPACE/$IMAGE:$MAJORVERSION
     docker push $NAMESPACE/$IMAGE:latest
 fi
