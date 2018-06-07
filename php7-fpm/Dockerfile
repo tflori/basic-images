@@ -20,7 +20,7 @@ RUN sed -i 's/^;daemonize = yes/daemonize = no/g' /etc/php7/php-fpm.conf \
       echo 'addgroup -g $GID www-user'; \
       echo 'adduser -G www-user -D -u $UID www-user'; \
       echo 'mkdir -p /var/log/php'; \
-      echo 'chown -R $UID:$GID /var/log/php'; \
+      echo 'chown -R $UID:$GID /var/log/php /home/www-user'; \
       echo ''; \
       echo 'ip address|grep inet6'; \
       echo 'if [ $? -ne 0 ]; then'; \

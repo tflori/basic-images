@@ -35,7 +35,7 @@ RUN { \
         echo 'addgroup -g $GID www-user'; \
         echo 'adduser -G www-user -D -u $UID www-user'; \
         echo ''; \
-        echo 'chown -R $UID:$GID /var/lib/nginx /var/log/httpd /run/nginx'; \
+        echo 'chown -R $UID:$GID /var/lib/nginx /var/log/httpd /run/nginx /home/www-user'; \
         echo ''; \
         echo 'ip address|grep inet6'; \
         echo 'if [ $? -ne 0 ]; then'; \
