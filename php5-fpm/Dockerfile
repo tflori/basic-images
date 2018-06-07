@@ -1,7 +1,7 @@
 FROM iras/php5:1.0
 
-ENV UID 33
-ENV GID 33
+ENV UID 333
+ENV GID 333
 
 VOLUME /var/www/localhost/htdocs
 VOLUME /var/log/php
@@ -18,6 +18,9 @@ RUN sed -i 's/^;daemonize = yes/daemonize = no/g' /etc/php5/php-fpm.conf \
  && sed -i 's/^group =/;group =/g' /etc/php5/fpm.d/www.conf \
  && sed -i -n '/; Pool Definitions ;/q;p' /etc/php5/php-fpm.conf \
  && { echo '#!/bin/sh'; \
+      echo ''; \
+      echo 'addgroup -g $GID www-user'; \
+      echo 'adduser -G www-user -D -u $UID www-user'; \
       echo 'mkdir -p /var/log/php'; \
       echo 'chown -R $UID:$GID /var/log/php'; \
       echo ''; \

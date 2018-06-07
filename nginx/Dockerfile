@@ -1,7 +1,7 @@
 FROM alpine:3.5
 
-ENV UID 33
-ENV GID 33
+ENV UID 333
+ENV GID 333
 ENV DOCUMENT_ROOT /var/www/localhost/htdocs
 
 # install nginx
@@ -31,6 +31,9 @@ RUN mkdir -p /run/nginx /var/log/httpd \
 # configure run
 RUN { \
         echo '#!/bin/sh'; \
+        echo ''; \
+        echo 'addgroup -g $GID www-user'; \
+        echo 'adduser -G www-user -D -u $UID www-user'; \
         echo ''; \
         echo 'chown -R $UID:$GID /var/lib/nginx /var/log/httpd /run/nginx'; \
         echo ''; \
