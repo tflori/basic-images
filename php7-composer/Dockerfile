@@ -1,4 +1,4 @@
-FROM iras/php7:1
+FROM iras/php7:3
 
 # install composer, ca-certificates and bash
 RUN apk add --no-cache ca-certificates bash git \
