@@ -1,7 +1,7 @@
 FROM iras/php7:3
 
 # install composer, ca-certificates and bash
-RUN apk add --no-cache ca-certificates bash git \
+RUN apk add --no-cache ca-certificates bash git openssh-client \
  && update-ca-certificates \
  && mkdir /.composer && chmod 777 /.composer \
  && php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" \
