@@ -33,7 +33,7 @@ RUN sed -i 's/^;daemonize = yes/daemonize = no/g' /etc/php7/php-fpm.conf \
       echo 'fi'; \
       echo ''; \
       echo 'su-exec $UID:$GID setup && \'; \
-      echo 'exec su-exec $UID:$GID php-fpm'; \
+      echo 'exec su-exec $UID:$GID php-fpm "$@"'; \
      } > /usr/local/bin/run \
  && chmod +x /usr/local/bin/run
 
