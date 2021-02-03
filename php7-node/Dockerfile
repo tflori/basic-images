@@ -1,4 +1,4 @@
-FROM iras/php7:3
+FROM iras/php7:2
 
 # install node and npm
 RUN apk add --no-cache nodejs nodejs-npm \
