@@ -2,6 +2,8 @@ build:
   image: docker:20
   services:
     - docker:20-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
   before_script:
     - docker info
   only:
