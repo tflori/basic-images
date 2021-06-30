@@ -1,4 +1,14 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - when: always
+
 build:
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: always
+    - when: manual
   image: docker:19
   services:
     - docker:19-dind
@@ -7,4 +17,4 @@ build:
     - docker info
     - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" "$DOCKER_REGISTRY"
   script:
-    - bash buildAndDeploy.sh php8-0.0.2
+    - bash buildAndDeploy.sh ${CI_COMMIT_TAG-$IMAGE} $VERSION

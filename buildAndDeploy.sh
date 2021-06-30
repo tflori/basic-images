@@ -1,17 +1,13 @@
 #!/bin/bash
 set -e
 
-if $CI; then
-    echo "Running on travis ci..."
-fi
-
 IMAGE="$1"
-VERSION="latest"
+VERSION={$2-latest}
 NAMESPACE="iras"
 
-if [ $IMAGE == "master" ]; then
-    echo "nothing to do for master..."
-    exit 0;
+if [ -z $IMAGE ]; then
+    echo "please provide an image name to build"
+    exit 1;
 fi
 
 if [[ $IMAGE =~ -[0-9.]*$ ]]; then
