@@ -24,11 +24,6 @@ if [[ $VERSION =~ ^[0-9]*\.[0-9]*\.[0-9]$ ]]; then
     VERSION=$(echo "$VERSION" | cut -d "." -f 1,2)
 fi
 
-if ! grep 'index.docker.io' $HOME/.docker/config.json > /dev/null 2>&1; then
-  echo Trying to login to docker.io with $DOCKER_USERNAME
-  docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-fi
-
 if [ ! -d $IMAGE ]; then
     echo "$IMAGE does not exist" >&2
     exit 1;
