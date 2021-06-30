@@ -5,7 +5,8 @@ if $CI; then
     echo "Running on travis ci..."
 fi
 
-IMAGE="$TRAVIS_BRANCH$1"
+IMAGE="$1"
+VERSION="latest"
 NAMESPACE="iras"
 
 if [ $IMAGE == "master" ]; then
@@ -16,38 +17,40 @@ fi
 if [[ $IMAGE =~ -[0-9.]*$ ]]; then
     VERSION=$(echo "$IMAGE" | sed 's/^.*-\([0-9.]*\)$/\1/')
     IMAGE=$(echo "$IMAGE" | sed 's/^\(.*\)-[0-9.]*$/\1/')
-else
-    VERSION=latest
 fi
 
-if [ -z $TRAVIS_TAG ]; then
-    # non tags are always latest versions
-    VERSION=latest
-elif [[ $VERSION =~ ^[0-9]*\.[0-9]*\.[0-9]$ ]]; then
+if [[ $VERSION =~ ^[0-9]*\.[0-9]*\.[0-9]$ ]]; then
     # version major.minor.fix gets major.minor on docker
     VERSION=$(echo "$VERSION" | cut -d "." -f 1,2)
 fi
 
-echo "Image: $IMAGE"
-echo "Version: $VERSION"
-echo "Namespace: $NAMESPACE"
-echo "Username: $DOCKER_USERNAME"
+if ! grep 'index.docker.io' $HOME/.docker/config.json > /dev/null 2>&1; then
+  echo Trying to login to docker.io with $DOCKER_USERNAME
+  docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+fi
 
 if [ ! -d $IMAGE ]; then
     echo "$IMAGE does not exist" >&2
     exit 1;
 fi
 
+echo "Image: $IMAGE"
+echo "Version: $VERSION"
+echo "Namespace: $NAMESPACE"
+
 set -x
 
 docker build -t $NAMESPACE/$IMAGE:$VERSION $IMAGE
-docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 docker push $NAMESPACE/$IMAGE:$VERSION
+
+set +x
 
 if [[ $VERSION =~ ^[0-9]*\.[0-9]*$ ]]; then
     MAJORVERSION=$(echo "$VERSION" | cut -d "." -f 1)
+    set +x
     docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:$MAJORVERSION
     docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:latest
     docker push $NAMESPACE/$IMAGE:$MAJORVERSION
     docker push $NAMESPACE/$IMAGE:latest
+    set -x
 fi
