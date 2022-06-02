@@ -1,12 +1,22 @@
-FROM alpine:3.13
+FROM ubuntu:22.04
 
-# install php7 with all modules
-RUN apk add --no-cache \
-        php7-intl php7-openssl php7-sqlite3 php7-pdo_mysql php7-pcntl php7-common php7-mysqlnd php7-pspell php7-pecl-redis \
-        php7-ctype php7-snmp php7-mbstring php7-xmlrpc php7-xmlreader php7-pdo_sqlite php7-simplexml php7-mysqli \
-        php7-exif php7-opcache php7-posix php7-session php7-gd php7-gettext php7-tokenizer php7-json php7-xml php7 \
-        php7-iconv php7-curl php7-shmop php7-odbc php7-phar php7-pdo_pgsql php7-imap php7-pdo_dblib php7-pgsql \
-        php7-pdo_odbc php7-xdebug php7-zip php7-mcrypt php7-bcmath php7-calendar php7-tidy php7-dom php7-sockets \
-        php7-soap php7-zlib php7-ftp php7-pdo php7-bz2 php7-xmlwriter php7-fileinfo php7-gmp \
- && mkdir -p /var/lib/net-snmp/mib_indexes
+ARG DEBIAN_FRONTEND=noninteractive
+ARG TIMEZONE=Europe/Berlin
 
+RUN apt-get update && apt-get install --no-install-recommends --mark-auto -y \
+    software-properties-common ca-certificates lsb-release apt-transport-https gpg-agent \
+ && add-apt-repository -y ppa:ondrej/php \
+ && apt-get update \
+ && ln -fs /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+ && apt-get install --no-install-recommends -y \
+    php7.3-cli php7.3-amqp php7.3-apcu php7.3-ast php7.3-bcmath php7.3-bz2 php7.3-curl php7.3-dba \
+    php7.3-decimal php7.3-gd php7.3-grpc php7.3-imap php7.3-intl php7.3-json php7.3-ldap \
+    php7.3-mbstring php7.3-mcrypt php7.3-mysql php7.3-opcache php7.3-pgsql \
+    php7.3-readline php7.3-redis php7.3-soap php7.3-sqlite3 php7.3-tidy php7.3-xdebug php7.3-xml \
+    php7.3-zip \
+ && mkdir -p /var/lib/net-snmp/mib_indexes \
+ && apt-get clean autoclean && apt-get autoremove --yes && rm -Rf /var/lib/apt/lists/*
+
+RUN { echo '; Uncomment to enable this extension.'; \
+      echo ';zend_extension=xdebug.so'; \
+    } > /etc/php/7.3/mods-available/xdebug.ini
