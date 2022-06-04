@@ -36,11 +36,11 @@ docker push $NAMESPACE/$IMAGE:$VERSION
 
 set +x
 
-if [[ $VERSION =~ ^[0-9]*\.[0-9]*$ ]]; then
+if [[ $VERSION =~ ^ubuntu-[0-9]*\.[0-9]*$ ]]; then
     MAJORVERSION=$(echo "$VERSION" | cut -d "." -f 1)
     set +x
     docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:$MAJORVERSION
-    docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:latest
+    docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:ubuntu-latest
     docker push $NAMESPACE/$IMAGE:$MAJORVERSION
     docker push $NAMESPACE/$IMAGE:latest
     set -x
