@@ -2,7 +2,7 @@
 set -e
 
 IMAGE="$1"
-VERSION={$2-latest}
+VERSION={$2-'dev'}
 NAMESPACE="iras"
 
 if [ -z $IMAGE ]; then
@@ -15,7 +15,7 @@ if [[ $IMAGE =~ -[0-9.]*$ ]]; then
     IMAGE=$(echo "$IMAGE" | sed 's/^\(.*\)-[0-9.]*$/\1/')
 fi
 
-if [[ $VERSION =~ ^[0-9]*\.[0-9]*\.[0-9]$ ]]; then
+if [[ $VERSION =~ [0-9]*\.[0-9]*\.[0-9]$ ]]; then
     # version major.minor.fix gets major.minor on docker
     VERSION=$(echo "$VERSION" | cut -d "." -f 1,2)
 fi
@@ -38,10 +38,10 @@ set +x
 
 if [[ $VERSION =~ ^[0-9]*\.[0-9]*$ ]]; then
     MAJORVERSION=$(echo "$VERSION" | cut -d "." -f 1)
-    set +x
+    set -x
     docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:$MAJORVERSION
     docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:latest
     docker push $NAMESPACE/$IMAGE:$MAJORVERSION
     docker push $NAMESPACE/$IMAGE:latest
-    set -x
+    set +x
 fi
