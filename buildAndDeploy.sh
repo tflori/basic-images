@@ -3,9 +3,10 @@ set -e
 
 IMAGE="$1"
 VERSION={$2-'dev'}
+OS=""
 NAMESPACE="iras"
 
-if [ -z $IMAGE ]; then
+if [ -z "$IMAGE" ]; then
     echo "please provide an image name to build"
     exit 1;
 fi
@@ -15,9 +16,14 @@ if [[ $IMAGE =~ -[0-9.]*$ ]]; then
     IMAGE=$(echo "$IMAGE" | sed 's/^\(.*\)-[0-9.]*$/\1/')
 fi
 
+if [[ $IMAGE =~ -(alpine|ubuntu|centos|debian)$ ]]; then
+  OS=$(echo "$IMAGE" | sed 's/^\(.*\)-\(alpine\|ubuntu\|centos\|debian\)$/\2/')-
+  IMAGE=$(echo "$IMAGE" | sed 's/^\(.*\)-\(alpine\|ubuntu\|centos\|debian\)$/\1/')
+fi
+
 if [[ $VERSION =~ [0-9]*\.[0-9]*\.[0-9]$ ]]; then
-    # version major.minor.fix gets major.minor on docker
-    VERSION=$(echo "$VERSION" | cut -d "." -f 1,2)
+    MAJOR_VERSION=$(echo "$VERSION" | cut -d "." -f 1)
+    MINOR_VERSION=$(echo "$VERSION" | cut -d "." -f 2)
 fi
 
 if [ ! -d $IMAGE ]; then
@@ -27,21 +33,23 @@ fi
 
 echo "Image: $IMAGE"
 echo "Version: $VERSION"
+echo "OS: $OS"
 echo "Namespace: $NAMESPACE"
 
 set -x
-
-docker build -t $NAMESPACE/$IMAGE:$VERSION $IMAGE
-docker push $NAMESPACE/$IMAGE:$VERSION
-
+docker build -t $NAMESPACE/$IMAGE:$OS$VERSION $IMAGE
+docker push $NAMESPACE/$IMAGE:$OS$VERSION
 set +x
 
-if [[ $VERSION =~ ^[0-9]*\.[0-9]*$ ]]; then
-    MAJORVERSION=$(echo "$VERSION" | cut -d "." -f 1)
+if [[ -n "$MAJOR_VERSION" ]]; then
     set -x
-    docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:$MAJORVERSION
-    docker tag $NAMESPACE/$IMAGE:$VERSION $NAMESPACE/$IMAGE:latest
-    docker push $NAMESPACE/$IMAGE:$MAJORVERSION
-    docker push $NAMESPACE/$IMAGE:latest
+    for tag in \
+      $NAMESPACE/$IMAGE:$OS$MAJOR_VERSION.$MINOR_VERSION \
+      $NAMESPACE/$IMAGE:$OS$MAJOR_VERSION \
+      $NAMESPACE/$IMAGE:$OS"latest" \
+    ; do
+      docker tag $NAMESPACE/$IMAGE:$VERSION $tag
+      docker push $tag
+    done
     set +x
 fi

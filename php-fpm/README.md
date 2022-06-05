@@ -1,10 +1,10 @@
-# php5-fpm
+# php-fpm
 
-Alpine image with php5 and fpm installed. Use this to build your php server image or run your dev environment directly
+Alpine image with php and fpm installed. Use this to build your php server image or run your dev environment directly
 from this image:
 
 ```console
-$ docker run --rm -ti -e UID=$(id -u) -v $(pwd):/var/www/localhost iras/php5-fpm
+$ docker run --rm -ti -e UID=$(id -u) -v $(pwd):/var/www/localhost iras/php-fpm:7.1
 ```
 
 ## logging
@@ -27,11 +27,12 @@ xdebug.remote_connect_back=1
 ```
 
 Example docker-compose.yml for development:
+
 ```yml
 services:
   php:
-    image: iras/php5-fpm
+    image: iras/php-fpm:7.1
     volumes:
       - ./:/app
-      - provision/xdebug.ini:/etc/php5/conf.d/xdebug.ini
+      - ./provision/xdebug.ini:/etc/php7/conf.d/xdebug.ini
 ```

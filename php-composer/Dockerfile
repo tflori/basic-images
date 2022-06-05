@@ -1,6 +1,6 @@
-FROM iras/php5:1.0
+FROM iras/php:7.1
 
-# install composer, ca-certificates and bash
+# install composer, ca-certificates, bash and git
 RUN apk add --no-cache ca-certificates bash git \
  && update-ca-certificates \
  && mkdir /.composer && chmod 777 /.composer \
