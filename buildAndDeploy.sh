@@ -39,17 +39,17 @@ echo "Namespace: $NAMESPACE"
 set -x
 docker build -t $NAMESPACE/$IMAGE:$OS$VERSION $IMAGE
 docker push $NAMESPACE/$IMAGE:$OS$VERSION
-set +x
+{ set +x; } 2>/dev/null
 
 if [[ -n "$MAJOR_VERSION" ]]; then
-    set -x
     for tag in \
       $NAMESPACE/$IMAGE:$OS$MAJOR_VERSION.$MINOR_VERSION \
       $NAMESPACE/$IMAGE:$OS$MAJOR_VERSION \
       $NAMESPACE/$IMAGE:$OS"latest" \
     ; do
+      set -x
       docker tag $NAMESPACE/$IMAGE:$VERSION $tag
       docker push $tag
+      { set +x; } 2>/dev/null
     done
-    set +x
 fi
