@@ -48,7 +48,7 @@ if [[ -n "$MAJOR_VERSION" ]]; then
       $NAMESPACE/$IMAGE:$OS"latest" \
     ; do
       set -x
-      docker tag $NAMESPACE/$IMAGE:$VERSION $tag
+      docker tag $NAMESPACE/$IMAGE:$OS$VERSION $tag
       docker push $tag
       { set +x; } 2>/dev/null
     done
