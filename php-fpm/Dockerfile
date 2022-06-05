@@ -1,4 +1,4 @@
-FROM iras/php:7.1
+FROM iras/php:ubuntu-7.1-dev
 
 ENV UID 333
 ENV GID 333
@@ -6,15 +6,16 @@ ENV GID 333
 VOLUME /var/www/localhost/htdocs
 VOLUME /var/log/php
 
-RUN apk add --no-cache php7-fpm su-exec \
- && ln -s /usr/sbin/php-fpm7 /usr/sbin/php-fpm
+RUN apt-get update && apt-get install --no-install-recommends -y php7.1-fpm sudo \
+ && apt-get clean autoclean && apt-get autoremove --yes && rm -Rf /var/lib/apt/lists/*
 
 # configure php-fpm
-RUN sed -i 's/^;daemonize = yes/daemonize = no/g' /etc/php7/php-fpm.conf \
- && sed -i 's/^;error_log = log\/php7\/error.log/error_log = log\/php\/php-error.log/g' /etc/php7/php-fpm.conf \
- && sed -i 's/^listen = 127.0.0.1:9000/listen = 9000/g' /etc/php7/php-fpm.d/www.conf \
- && sed -i 's/^user =/;user =/g' /etc/php7/php-fpm.d/www.conf \
- && sed -i 's/^group =/;group =/g' /etc/php7/php-fpm.d/www.conf \
+RUN sed -i 's/^;daemonize = yes/daemonize = no/g' /etc/php/7.1/fpm/php-fpm.conf \
+ && sed -i 's/^error_log = \/var\/log\/php7.1-fpm.log/error_log = \/var\/log\/php\/php-error.log/g' /etc/php/7.1/fpm/php-fpm.conf \
+ && sed -i 's/^listen = \/run\/php\/php7.1-fpm.sock/listen = 9000/g' /etc/php/7.1/fpm/pool.d/www.conf \
+ && sed -i 's/^user =/;user =/g' /etc/php/7.1/fpm/pool.d/www.conf \
+ && sed -i 's/^group =/;group =/g' /etc/php/7.1/fpm/pool.d/www.conf \
+ && phpdismod xdebug \
  && { echo '#!/bin/sh'; \
       echo 'set -e'; \
     } > /usr/local/bin/setup \
@@ -22,18 +23,19 @@ RUN sed -i 's/^;daemonize = yes/daemonize = no/g' /etc/php7/php-fpm.conf \
  && { echo '#!/bin/sh'; \
       echo ''; \
       echo 'if ! grep www-user /etc/passwd; then'; \
-      echo '  addgroup -g $GID www-user'; \
-      echo '  adduser -G www-user -D -u $UID www-user'; \
+      echo '  addgroup --gid $GID www-user'; \
+      echo '  adduser --system --ingroup www-user --uid $UID --disabled-password www-user'; \
       echo '  mkdir -p /var/log/php'; \
-      echo '  chown -R $UID:$GID /var/log/php /home/www-user'; \
       echo 'fi'; \
+      echo ''; \
+      echo 'chown -R $UID:$GID /var/log/php /home/www-user /var/run/php'; \
       echo ''; \
       echo 'if ! ip address | grep inet6; then'; \
-      echo '  sed -i "s/listen = 9000/listen = 0.0.0.0:9000/g" /etc/php7/php-fpm.d/www.conf'; \
+      echo '  sed -i "s/listen = 9000/listen = 0.0.0.0:9000/g" /etc/php/7.1/fpm/pool.d/www.conf'; \
       echo 'fi'; \
       echo ''; \
-      echo 'su-exec $UID:$GID setup && \'; \
-      echo 'exec su-exec $UID:$GID php-fpm "$@"'; \
+      echo 'sudo -u www-user -g www-user setup && \'; \
+      echo 'exec sudo -u www-user -g www-user php-fpm7.1 "$@"'; \
      } > /usr/local/bin/run \
  && chmod +x /usr/local/bin/run
 
