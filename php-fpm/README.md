@@ -4,7 +4,7 @@ Alpine image with php and fpm installed. Use this to build your php server image
 from this image:
 
 ```console
-$ docker run --rm -ti -e UID=$(id -u) -v $(pwd):/var/www/localhost iras/php-fpm:7.1
+$ docker run --rm -ti -e UID=$(id -u) -v $(pwd):/var/www/localhost iras/php-fpm:7.2
 ```
 
 ## logging
@@ -31,7 +31,7 @@ Example docker-compose.yml for development:
 ```yml
 services:
   php:
-    image: iras/php-fpm:7.1
+    image: iras/php-fpm:7.2
     volumes:
       - ./:/app
       - ./provision/xdebug.ini:/etc/php7/conf.d/xdebug.ini
