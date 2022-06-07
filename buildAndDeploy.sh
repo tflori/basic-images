@@ -37,7 +37,16 @@ echo "OS: $OS"
 echo "Namespace: $NAMESPACE"
 
 set -x
-docker build -t $NAMESPACE/$IMAGE:$OS$VERSION $IMAGE
+if [[ -n "$MAJOR_VERSION" ]]; then
+  docker pull $NAMESPACE/$IMAGE:$OS$MAJOR_VERSION.$MINOR_VERSION || true
+  docker build \
+    --cache-from $NAMESPACE/$IMAGE:$OS$MAJOR_VERSION.$MINOR_VERSION \
+    --tag $NAMESPACE/$IMAGE:$OS$VERSION $IMAGE
+else
+  docker build \
+      --tag $NAMESPACE/$IMAGE:$OS$VERSION $IMAGE
+fi
+
 docker push $NAMESPACE/$IMAGE:$OS$VERSION
 { set +x; } 2>/dev/null
 
