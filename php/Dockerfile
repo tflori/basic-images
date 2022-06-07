@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.11
 
 # install php7 with all modules
 RUN apk add --no-cache \

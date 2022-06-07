@@ -1,4 +1,4 @@
-FROM iras/php:7.2
+FROM iras/php:7.3
 
 ENV UID 333
 ENV GID 333
