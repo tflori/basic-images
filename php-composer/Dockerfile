@@ -1,4 +1,4 @@
-FROM iras/php:7.3
+FROM iras/php:7.4
 
 # install composer, ca-certificates, bash and git
 RUN apk add --no-cache ca-certificates bash git openssh-client \
