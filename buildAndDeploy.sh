@@ -2,7 +2,7 @@
 set -e
 
 IMAGE="$1"
-VERSION={$2-'dev'}
+VERSION=${2-'dev'}
 OS=""
 NAMESPACE="iras"
 
