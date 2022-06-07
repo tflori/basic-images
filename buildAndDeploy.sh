@@ -36,17 +36,14 @@ echo "Version: $VERSION"
 echo "OS: $OS"
 echo "Namespace: $NAMESPACE"
 
-set -x
+CACHE_IMAGE=$NAMESPACE/$IMAGE:$OS$VERSION
 if [[ -n "$MAJOR_VERSION" ]]; then
-  docker pull $NAMESPACE/$IMAGE:$OS$MAJOR_VERSION.$MINOR_VERSION || true
-  docker build \
-    --cache-from $NAMESPACE/$IMAGE:$OS$MAJOR_VERSION.$MINOR_VERSION \
-    --tag $NAMESPACE/$IMAGE:$OS$VERSION $IMAGE
-else
-  docker build \
-      --tag $NAMESPACE/$IMAGE:$OS$VERSION $IMAGE
+    CACHE_IMAGE=$NAMESPACE/$IMAGE:$OS$MAJOR_VERSION.$MINOR_VERSION
+    docker pull $NAMESPACE/$IMAGE:$OS$MAJOR_VERSION.$MINOR_VERSION || true
 fi
 
+set -x
+docker build --cache-from $CACHE_IMAGE --tag $NAMESPACE/$IMAGE:$OS$VERSION $IMAGE
 docker push $NAMESPACE/$IMAGE:$OS$VERSION
 { set +x; } 2>/dev/null
 
