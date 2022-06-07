@@ -2,10 +2,11 @@ FROM alpine:3.13
 
 # install php7 with all modules
 RUN apk add --no-cache \
-        php7-intl php7-openssl php7-sqlite3 php7-pdo_mysql php7-pcntl php7-common php7-mysqlnd php7-pspell php7-pecl-redis \
-        php7-ctype php7-snmp php7-mbstring php7-xmlrpc php7-xmlreader php7-pdo_sqlite php7-simplexml php7-mysqli \
-        php7-exif php7-opcache php7-posix php7-session php7-gd php7-gettext php7-tokenizer php7-json php7-xml php7 \
-        php7-iconv php7-curl php7-shmop php7-odbc php7-phar php7-pdo_pgsql php7-imap php7-pdo_dblib php7-pgsql \
-        php7-pdo_odbc php7-xdebug php7-zip php7-mcrypt php7-bcmath php7-calendar php7-tidy php7-dom php7-sockets \
-        php7-soap php7-zlib php7-ftp php7-pdo php7-bz2 php7-xmlwriter php7-fileinfo php7-gmp \
- && mkdir -p /var/lib/net-snmp/mib_indexes
+        php8 php8-openssl php8-pdo php8-pdo_mysql php8-pdo_sqlite php8-pdo_pgsql php8-pdo_dblib php8-pdo_odbc \
+        php8-intl php8-pcntl php8-mysqli php8-pgsql php8-pecl-redis php8-ctype php8-mbstring php8-exif php8-opcache \
+        php8-gd php8-gettext php8-sqlite3 php8-pspell php8-snmp php8-xml php8-xmlreader php8-xmlwriter php8-simplexml \
+        php8-posix php8-session php8-tokenizer php8-iconv php8-curl php8-shmop php8-odbc php8-phar php8-imap \
+        php8-pdo_odbc php8-pecl-xdebug php8-zip php8-bcmath php8-calendar php8-tidy php8-dom php8-sockets \
+        php8-soap php8-zlib php8-ftp php8-pdo php8-bz2 php8-fileinfo \
+ && mkdir -p /var/lib/net-snmp/mib_indexes \
+ && ln -s /usr/bin/php8 /usr/bin/php
