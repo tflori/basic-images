@@ -1,4 +1,4 @@
-FROM iras/php:ubuntu-7.2
+FROM iras/php:ubuntu-7.3
 
 # install composer and git
 RUN apt-get update && apt-get install --no-install-recommends -y git openssh-client \
