@@ -1,4 +1,4 @@
-FROM iras/php:ubuntu-8.0-dev
+FROM iras/php:ubuntu-8.0
 
 # install composer and git
 RUN apt-get update && apt-get install --no-install-recommends -y git openssh-client \

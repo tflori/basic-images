@@ -1,4 +1,4 @@
-FROM iras/php:ubuntu-8.0-dev
+FROM iras/php:ubuntu-8.0
 
 ENV UID 333
 ENV GID 333
