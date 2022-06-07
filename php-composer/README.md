@@ -3,7 +3,7 @@
 Ubuntu image with php7 and composer installed. You can use it to install composer dependencies in your project:
 
 ```console
-$ docker run --rm --user $(id -u) -v $(pwd):/app -w /app iras/php-composer:ubuntu-7.3 composer install
+$ docker run --rm --user $(id -u) -v $(pwd):/app -w /app iras/php-composer:ubuntu-7.4 composer install
 ```
 
 **NOTE** it is recommended to pass/change the user as the files are from root otherwise.
@@ -23,7 +23,7 @@ Example docker-compose.yml:
 ```yaml
 services:
   composer:
-    image: iras/php-composer:ubuntu-7.3
+    image: iras/php-composer:ubuntu-7.4
     user: "${PUID-1000}"
     working_dir: "/app"
     entrypoint: /usr/bin/composer
